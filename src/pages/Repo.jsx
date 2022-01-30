@@ -25,7 +25,7 @@ const Repo = () => {
       const { name, description, star, url } = res
       if (!description) {
         toast("This repository don't have description", {
-          icon: '🤔'
+          icon: '🥸'
         })
       }
       setRepos({

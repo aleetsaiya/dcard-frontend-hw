@@ -18,12 +18,12 @@ const Repos = () => {
   useEffect(() => {
     const cache = getCache()
     if (cache) {
-      checkDone(cache.page, cache.repos, cache.done)
       setRepos({
         repos: cache.repos,
         page: cache.page,
         done: cache.done
       })
+      checkDone(cache.page, cache.repos, cache.done)
     } else loadRepos()
   }, [])
 

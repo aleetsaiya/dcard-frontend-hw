@@ -2,7 +2,6 @@ import axios from 'axios'
 
 export const getRepositoryList = async (data) => {
   const { perPage, page, username } = data
-  console.log('In API page:', page)
   const res = await axios.request({
     method: 'Get',
     url: `https://api.github.com/users/${username}/repos`,
