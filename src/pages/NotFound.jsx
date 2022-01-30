@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const NotFound = () => {
-  const [seconds, setSeconds] = useState(10);
-  const navigate = useNavigate();
+  const [seconds, setSeconds] = useState(10)
+  const navigate = useNavigate()
 
   // count down timmer
   useEffect(() => {
     if (seconds > 0) {
       const id = setTimeout(() => {
-        setSeconds((seconds) => seconds - 1);
-      }, 1000);
-      return () => clearInterval(id);
+        setSeconds((seconds) => seconds - 1)
+      }, 1000)
+      return () => clearInterval(id)
     }
     if (seconds <= 0) {
-      redirect();
+      redirect()
     }
-  }, [seconds]);
+  }, [seconds])
 
   // redirect to Home page
   const redirect = () => {
-    navigate("/");
-  };
+    navigate('/')
+  }
 
   return (
     <div>
@@ -31,7 +31,7 @@ const NotFound = () => {
         Redirect to Home page: <button onClick={redirect}>link</button>
       </p>
     </div>
-  );
-};
+  )
+}
 
-export default NotFound;
+export default NotFound

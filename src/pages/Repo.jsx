@@ -1,42 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { getRepositoryDetail } from "../githubAPI";
-import toast, { Toaster } from "react-hot-toast";
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { getRepositoryDetail } from '../githubAPI'
+import toast, { Toaster } from 'react-hot-toast'
 
 const Repo = () => {
-  const { username, repo } = useParams();
+  const { username, repo } = useParams()
   const [repos, setRepos] = useState({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     star: 0,
-    url: "",
-  });
+    url: ''
+  })
 
   useEffect(() => {
-    loadRepoDetail();
-  }, []);
+    loadRepoDetail()
+  }, [])
 
   const loadRepoDetail = async () => {
     try {
       const res = await getRepositoryDetail({
         username: username,
-        repoName: repo,
-      });
-      const { name, description, star, url } = res;
-      if (!description)
+        repoName: repo
+      })
+      const { name, description, star, url } = res
+      if (!description) {
         toast("This repository don't have description", {
-          icon: "🤔",
-        });
+          icon: '🤔'
+        })
+      }
       setRepos({
         name,
         description,
         star,
-        url,
-      });
+        url
+      })
     } catch (e) {
-      toast.error("Request Failed");
+      toast.error('Request Failed')
     }
-  };
+  }
 
   return (
     <div>
@@ -49,14 +50,14 @@ const Repo = () => {
         <li>star: {repos.star}</li>
         <li>
           url:
-          <a href={repos.url} target="_blank">
+          <a href={repos.url} target="_blank" rel="noreferrer">
             link
           </a>
         </li>
       </ul>
       <Toaster position="top-center" reverseOrder={false} />
     </div>
-  );
-};
+  )
+}
 
-export default Repo;
+export default Repo
