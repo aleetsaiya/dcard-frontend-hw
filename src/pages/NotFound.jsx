@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
+  const [seconds, setSeconds] = useState(10);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (seconds > 0) {
+      const id = setTimeout(() => {
+        setSeconds((seconds) => seconds - 1);
+      }, 1000);
+      return () => clearInterval(id);
+    }
+    if (seconds <= 0) {
+      redirect();
+    }
+  }, [seconds]);
+
+  const redirect = () => {
+    navigate("/");
+  };
+
   return (
     <div>
       <h2>404 page not found</h2>
+      <p>Automatically redirect to Home page: {seconds}</p>
+      <p>
+        Redirect to Home page: <button onClick={redirect}>link</button>
+      </p>
     </div>
   );
 };
