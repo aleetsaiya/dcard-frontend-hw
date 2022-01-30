@@ -36,7 +36,7 @@
 因為是上架在 GithubPage 上，因此我將 root 設定成這份 repository 的名稱。  
 
 + root: `/dcard-frontend-hw`。
-+ Home Page: `root`。[link](https://aleetsaiya.github.io/dcard-frontend-hw/)
++ Home Page: `root`。
 + Repository List Page: `root` + `/users/{username}/repos`。
 + Repository Detail Page:  `root` + `/users/{username}/repos/{repo}`。
 
