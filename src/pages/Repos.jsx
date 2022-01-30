@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getRepositoryList } from '../githubAPI'
 import toast, { Toaster } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import getPath from '../routeSetting'
 
 const Repos = () => {
   const { username } = useParams()
@@ -101,7 +102,9 @@ const Repos = () => {
       return repos.repos.map((repo, index) => (
         <li
           key={index}
-          onClick={() => navigate(`/users/${username}/${repo.name}`)}
+          onClick={() =>
+            navigate(getPath(`/users/${username}/repos/${repo.name}`))
+          }
           style={{ background: 'yellow' }}
         >
           <div>name: {repo.name}</div>

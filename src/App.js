@@ -5,15 +5,19 @@ import Home from './pages/Home'
 import Repos from './pages/Repos'
 import Repo from './pages/Repo'
 import NotFound from './pages/NotFound'
+import getPath from './routeSetting'
 
 function App () {
   return (
     <div>
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route path="/users/:username/:repo" element={<Repo />} />
-        <Route path="/users/:username/repos" element={<Repos />} />
-        <Route path="*" element={<NotFound />} />
+        <Route exact path={getPath('/')} element={<Home />} />
+        <Route path={getPath('/users/:username/repos')} element={<Repos />} />
+        <Route
+          path={getPath('/users/:username/repos/:repo')}
+          element={<Repo />}
+        />
+        <Route path={getPath('*')} element={<NotFound />} />
       </Routes>
     </div>
   )

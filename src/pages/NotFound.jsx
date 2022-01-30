@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import getPath from '../routeSetting'
 
 const NotFound = () => {
   const [seconds, setSeconds] = useState(10)
@@ -20,7 +21,7 @@ const NotFound = () => {
 
   // redirect to Home page
   const redirect = () => {
-    navigate('/')
+    navigate(getPath('/'))
   }
 
   return (
