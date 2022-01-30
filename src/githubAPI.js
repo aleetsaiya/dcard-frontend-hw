@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getUserRepository = async (data) => {
+export const getRepositoryList = async (data) => {
   const { perPage, page, username } = data;
   console.log("In API page:", page);
   try {

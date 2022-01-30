@@ -5,6 +5,7 @@ const NotFound = () => {
   const [seconds, setSeconds] = useState(10);
   const navigate = useNavigate();
 
+  // count down timmer
   useEffect(() => {
     if (seconds > 0) {
       const id = setTimeout(() => {
@@ -17,6 +18,7 @@ const NotFound = () => {
     }
   }, [seconds]);
 
+  // redirect to Home page
   const redirect = () => {
     navigate("/");
   };

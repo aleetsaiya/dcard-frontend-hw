@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getUserRepository } from "../githubAPI";
+import { getRepositoryList } from "../githubAPI";
 import toast, { Toaster } from "react-hot-toast";
 
 const Repos = () => {
@@ -19,6 +19,7 @@ const Repos = () => {
     if (cache) {
       console.log("use cache");
       const isDone = checkDone(cache.page, cache.repos, cache.done);
+      // if haven't get all repositories
       if (!isDone)
         setRepos({
           repos: cache.repos,
@@ -32,7 +33,7 @@ const Repos = () => {
     return JSON.parse(sessionStorage.getItem(`repos-${username}`));
   };
 
-  // store request times and user's repositories into session storage
+  // store next page that we should fetch and user's repositories into cache
   const storeIntoCache = (page, repos, done) => {
     sessionStorage.setItem(
       `repos-${username}`,
@@ -49,12 +50,13 @@ const Repos = () => {
     if (!repos.done) {
       console.log("fetch from remote API");
       try {
-        const res = await getUserRepository({
+        const res = await getRepositoryList({
           username: username,
           perPage: perPage,
           page: repos.page,
         });
         const isDone = checkDone(repos.page, res);
+        // if haven't get all repositories
         if (!isDone) {
           const nextPage =
             res.length === 10 ? parseInt(repos.page) + 1 : parseInt(repos.page);
@@ -71,7 +73,7 @@ const Repos = () => {
     }
   };
 
-  // check if any condition occur
+  // check if all the repositories are fetched and update to the newest state
   const checkDone = (page, res, done) => {
     // check if the user don't have any repository
     if (parseInt(page) === 1 && res.length === 0) {
@@ -86,7 +88,7 @@ const Repos = () => {
       storeIntoCache(repos.page, [...repos.repos], true);
       return true;
     }
-    // check there're no more repos
+    // check if there're no more repos
     else if (res.length < 10 || done) {
       toast.success("Get all repositories");
       setRepos({
