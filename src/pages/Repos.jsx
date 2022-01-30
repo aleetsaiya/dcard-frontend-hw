@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getRepositoryList } from "../githubAPI";
 import toast, { Toaster } from "react-hot-toast";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Repos = () => {
   const { username } = useParams();
@@ -17,15 +18,12 @@ const Repos = () => {
   useEffect(() => {
     const cache = getCache();
     if (cache) {
-      console.log("use cache");
-      const isDone = checkDone(cache.page, cache.repos, cache.done);
-      // if haven't get all repositories
-      if (!isDone)
-        setRepos({
-          repos: cache.repos,
-          page: cache.page,
-          done: cache.done,
-        });
+      checkDone(cache.page, cache.repos, cache.done);
+      setRepos({
+        repos: cache.repos,
+        page: cache.page,
+        done: cache.done,
+      });
     } else loadRepos();
   }, []);
 
@@ -33,7 +31,7 @@ const Repos = () => {
     return JSON.parse(sessionStorage.getItem(`repos-${username}`));
   };
 
-  // store next page that we should fetch and user's repositories into cache
+  // store repositories data into cache
   const storeIntoCache = (page, repos, done) => {
     sessionStorage.setItem(
       `repos-${username}`,
@@ -43,6 +41,16 @@ const Repos = () => {
         done: done,
       })
     );
+  };
+
+  // update to cache and state
+  const updateRepos = (page, repos, done) => {
+    storeIntoCache(page, repos, done);
+    setRepos({
+      repos,
+      page,
+      done,
+    });
   };
 
   // load repositories by API request
@@ -57,14 +65,12 @@ const Repos = () => {
         });
         const isDone = checkDone(repos.page, res);
         // if haven't get all repositories
-        if (!isDone) {
+        if (isDone) {
+          updateRepos(repos.page, [...repos.repos, ...res], true);
+        } else if (!isDone) {
           const nextPage =
             res.length === 10 ? parseInt(repos.page) + 1 : parseInt(repos.page);
-          storeIntoCache(nextPage, [...repos.repos, ...res], false);
-          setRepos({
-            repos: [...repos.repos, ...res],
-            page: nextPage,
-          });
+          updateRepos(nextPage, [...repos.repos, ...res], false);
         }
       } catch (e) {
         toast.error("Can not find this user in Github");
@@ -73,30 +79,19 @@ const Repos = () => {
     }
   };
 
-  // check if all the repositories are fetched and update to the newest state
+  // check whether all repositories are fetched
   const checkDone = (page, res, done) => {
     // check if the user don't have any repository
     if (parseInt(page) === 1 && res.length === 0) {
       toast("This user don't have any repository", {
         icon: "🤔",
       });
-      setRepos({
-        repos: [...repos.repos],
-        page: repos.page,
-        done: true,
-      });
-      storeIntoCache(repos.page, [...repos.repos], true);
       return true;
     }
     // check if there're no more repos
     else if (res.length < 10 || done) {
-      toast.success("Get all repositories");
-      setRepos({
-        repos: [...repos.repos, ...res],
-        page: repos.page,
-        done: true,
-      });
-      storeIntoCache(repos.page, [...repos.repos, ...res], true);
+      if (done) toast.success("Get all repositories from cache");
+      else toast.success("Get all repositories");
       return true;
     }
     return false;
@@ -122,8 +117,14 @@ const Repos = () => {
       <h2>Repos page</h2>
       <div>Legnth: {repos.repos.length}</div>
       <div>Username is: {username}</div>
-      <ul>{getReposList()}</ul>
-      <button onClick={loadRepos}>Get</button>
+      <InfiniteScroll
+        dataLength={repos.repos.length}
+        next={loadRepos}
+        hasMore={!repos.done}
+        loader={<h4>Loading ...</h4>}
+      >
+        <ul>{getReposList()}</ul>
+      </InfiniteScroll>
       <Toaster position="top-center" reverseOrder={false} />
     </div>
   );

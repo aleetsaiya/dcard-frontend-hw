@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getRepositoryDetail } from "../githubAPI";
+import toast, { Toaster } from "react-hot-toast";
 
 const Repo = () => {
   const { username, repo } = useParams();
@@ -12,16 +13,20 @@ const Repo = () => {
   });
 
   useEffect(() => {
-    handleClick();
+    loadRepoDetail();
   }, []);
 
-  const handleClick = async () => {
+  const loadRepoDetail = async () => {
     try {
       const res = await getRepositoryDetail({
         username: username,
         repoName: repo,
       });
       const { name, description, star, url } = res;
+      if (!description)
+        toast("This repository don't have description", {
+          icon: "🤔",
+        });
       setRepos({
         name,
         description,
@@ -29,7 +34,7 @@ const Repo = () => {
         url,
       });
     } catch (e) {
-      console.log(e);
+      toast.error("Request Failed");
     }
   };
 
@@ -38,20 +43,18 @@ const Repo = () => {
       <h2>
         This is {username} repo: {repo}
       </h2>
-      <div>
-        <div>
-          <div>full_name: {repos.name}</div>
-          <div>description: {repos.description}</div>
-          <div>star: {repos.star}</div>
-          <div>
-            url:{" "}
-            <a href={repos.url} target="_blank">
-              link
-            </a>
-          </div>
-        </div>
-        <button onClick={handleClick}>Send</button>
-      </div>
+      <ul>
+        <li>full_name: {repos.name}</li>
+        <li>description: {repos.description}</li>
+        <li>star: {repos.star}</li>
+        <li>
+          url:
+          <a href={repos.url} target="_blank">
+            link
+          </a>
+        </li>
+      </ul>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

@@ -29,20 +29,24 @@ export const getRepositoryList = async (data) => {
 
 export const getRepositoryDetail = async (data) => {
   const { username, repoName } = data;
-  const res = await axios.request({
-    method: "Get",
-    url: `https://api.github.com/repos/${username}/${repoName}`,
-    params: {
-      accept: "application/vnd.github.v3+json",
-      owner: username,
-      repo: repoName,
-    },
-  });
-  const { full_name, description, stargazers_count, html_url } = res.data;
-  return {
-    name: full_name,
-    description: description,
-    star: stargazers_count,
-    url: html_url,
-  };
+  try {
+    const res = await axios.request({
+      method: "Get",
+      url: `https://api.github.com/repos/${username}/${repoName}`,
+      params: {
+        accept: "application/vnd.github.v3+json",
+        owner: username,
+        repo: repoName,
+      },
+    });
+    const { full_name, description, stargazers_count, html_url } = res.data;
+    return {
+      name: full_name,
+      description: description,
+      star: stargazers_count,
+      url: html_url,
+    };
+  } catch (e) {
+    throw e;
+  }
 };
