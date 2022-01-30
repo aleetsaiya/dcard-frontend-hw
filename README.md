@@ -37,6 +37,6 @@
 
 + root: `/dcard-frontend-hw`。
 + Home Page: `root`。[link](https://aleetsaiya.github.io/dcard-frontend-hw/)
-+ Repository List Page: `root` + `/users/{username}/repos`。[link](https://aleetsaiya.github.io/dcard-frontend-hw/users/aleetsaiya/repos)
-+ Repository Detail Page:  `root` + `/users/{username}/repos/{repo}`。[link](https://aleetsaiya.github.io/dcard-frontend-hw/users/aleetsaiya/repos/dcard-frontend-hw)
++ Repository List Page: `root` + `/users/{username}/repos`。
++ Repository Detail Page:  `root` + `/users/{username}/repos/{repo}`。
 
