@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { getRepositoryDetail } from '../githubAPI'
 import toast, { Toaster } from 'react-hot-toast'
+import Layout from '../components/Layout'
 
 const Repo = () => {
   const { username, repo } = useParams()
@@ -40,10 +41,7 @@ const Repo = () => {
   }
 
   return (
-    <div>
-      <h2>
-        This is {username} repo: {repo}
-      </h2>
+    <Layout title="Repository">
       <ul>
         <li>full_name: {repos.name}</li>
         <li>description: {repos.description}</li>
@@ -55,8 +53,8 @@ const Repo = () => {
           </a>
         </li>
       </ul>
-      <Toaster position="top-center" reverseOrder={false} />
-    </div>
+      <Toaster position="bottom-center" reverseOrder={false} />
+    </Layout>
   )
 }
 

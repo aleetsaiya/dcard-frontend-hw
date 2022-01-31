@@ -5,6 +5,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { getPath, listType } from '../globalSetting'
 import List from '../components/List'
+import Layout from '../components/Layout'
 
 const Repos = () => {
   const { username } = useParams()
@@ -45,7 +46,7 @@ const Repos = () => {
     )
   }
 
-  // update to cache and state
+  // update cache and state
   const updateRepos = (page, repos, done, failed) => {
     storeIntoCache(page, repos, done, failed)
     setRepos({
@@ -110,20 +111,23 @@ const Repos = () => {
     }))
 
   return (
-    <div>
-      <h2>Repos page</h2>
+    <Layout title="Repository List">
       <div>Legnth: {repos.repos.length}</div>
       <div>Username is: {username}</div>
       <InfiniteScroll
         dataLength={repos.repos.length}
         next={loadRepos}
         hasMore={!repos.done}
-        loader={<h4>Loading ...</h4>}
+        loader={
+          <div style={{ textAlign: 'center', fontSize: '1rem' }}>
+            Loading ...
+          </div>
+        }
       >
         <List items={getReposList()} type={listType.reposPage} />
       </InfiniteScroll>
-      <Toaster position="top-center" reverseOrder={false} />
-    </div>
+      <Toaster position="bottom-center" reverseOrder={false} />
+    </Layout>
   )
 }
 

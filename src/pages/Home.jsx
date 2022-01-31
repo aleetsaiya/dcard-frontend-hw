@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { getPath, listType } from '../globalSetting'
 import List from '../components/List'
+import Layout from '../components/Layout'
+import { Button } from 'react-bootstrap'
 
 const Home = () => {
   const [username, setUsername] = useState('')
@@ -17,14 +19,8 @@ const Home = () => {
     setUsername(e.target.value)
   }
 
-  const checkSubmit = (e) => {
-    // if press enter
-    if (e.keyCode === 13) navigate(getPath(`/users/${username}/repos`))
-  }
-
   const getSearchHistory = () => {
     // get all items in sessionStorage
-    console.log('get history from cache')
     const items = { ...sessionStorage }
     const history = []
     for (const item in items) {
@@ -44,15 +40,38 @@ const Home = () => {
     return history
   }
 
+  const submit = () => {
+    navigate(getPath(`/users/${username}/repos`))
+  }
+
+  const checkPressEnter = (e) => {
+    // if press enter
+    if (e.keyCode === 13) navigate(getPath(`/users/${username}/repos`))
+  }
+
+  const clearHistory = () => {
+    sessionStorage.clear()
+    console.log(sessionStorage)
+    setSearchHistory([])
+  }
+
   return (
-    <div onKeyDown={checkSubmit}>
-      <h2>Home page!</h2>
+    <Layout title="Home">
       <div>Input username</div>
-      <input value={username} onChange={handleChanged}></input>
-      <Link to={getPath(`/users/${username}/repos`)}>Submit</Link>
+      <input
+        value={username}
+        onChange={handleChanged}
+        onKeyDown={checkPressEnter}
+      />
+      <Button size="sm" onClick={() => submit}>
+        Submit
+      </Button>
+      <Button variant="warning" size="sm" onClick={clearHistory}>
+        Clear History
+      </Button>
       <h3>History</h3>
       <List items={searchHistory} type={listType.homePage} />
-    </div>
+    </Layout>
   )
 }
 
