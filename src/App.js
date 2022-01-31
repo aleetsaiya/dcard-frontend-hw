@@ -5,7 +5,7 @@ import Home from './pages/Home'
 import Repos from './pages/Repos'
 import Repo from './pages/Repo'
 import NotFound from './pages/NotFound'
-import getPath from './routeSetting'
+import { getPath } from './globalSetting'
 
 function App () {
   return (

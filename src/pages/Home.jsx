@@ -1,10 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import getPath from '../routeSetting'
+import { getPath, listType } from '../globalSetting'
+import List from '../components/List'
 
 const Home = () => {
   const [username, setUsername] = useState('')
+  const [searchHistory, setSearchHistory] = useState([])
   const navigate = useNavigate()
+
+  // init
+  useEffect(() => {
+    setSearchHistory(getSearchHistory())
+  }, [])
 
   const handleChanged = (e) => {
     setUsername(e.target.value)
@@ -17,23 +24,22 @@ const Home = () => {
 
   const getSearchHistory = () => {
     // get all items in sessionStorage
+    console.log('get history from cache')
     const items = { ...sessionStorage }
     const history = []
-    let counter = 0
     for (const item in items) {
       const [type, name] = item.split('-')
       if (type === 'repos') {
-        const li = (
-          <li
-            key={counter}
-            onClick={() => navigate(getPath(`/users/${name}/repos`))}
-          >
-            {name}
-          </li>
-        )
-        history.push(li)
+        const cache = JSON.parse(items[item])
+        history.push({
+          message: name,
+          link: getPath(`/users/${name}/repos`),
+          num: cache.repos.length,
+          done: cache.done,
+          failed: cache.failed,
+          timestamp: cache.timestamp
+        })
       }
-      counter++
     }
     return history
   }
@@ -44,8 +50,8 @@ const Home = () => {
       <div>Input username</div>
       <input value={username} onChange={handleChanged}></input>
       <Link to={getPath(`/users/${username}/repos`)}>Submit</Link>
-      <h3>Search History</h3>
-      <ul>{getSearchHistory()}</ul>
+      <h3>History</h3>
+      <List items={searchHistory} type={listType.homePage} />
     </div>
   )
 }

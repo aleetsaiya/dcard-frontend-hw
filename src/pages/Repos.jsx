@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { getRepositoryList } from '../githubAPI'
 import toast, { Toaster } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import getPath from '../routeSetting'
+import { getPath, listType } from '../globalSetting'
+import List from '../components/List'
 
 const Repos = () => {
   const { username } = useParams()
@@ -12,7 +13,6 @@ const Repos = () => {
     page: 1,
     done: false
   })
-  const navigate = useNavigate()
   const perPage = 10
 
   // init
@@ -24,7 +24,7 @@ const Repos = () => {
         page: cache.page,
         done: cache.done
       })
-      checkDone(cache.page, cache.repos, cache.done)
+      checkDone(cache.page, cache.repos, cache.done, cache.failed)
     } else loadRepos()
   }, [])
 
@@ -33,23 +33,24 @@ const Repos = () => {
   }
 
   // store repositories data into cache
-  const storeIntoCache = (page, repos, done) => {
+  const storeIntoCache = (page, repos, done, failed) => {
     sessionStorage.setItem(
       `repos-${username}`,
       JSON.stringify({
         repos: repos,
         page: page,
-        done: done
+        done: done,
+        failed: failed
       })
     )
   }
 
   // update to cache and state
-  const updateRepos = (page, repos, done) => {
-    storeIntoCache(page, repos, done)
+  const updateRepos = (page, repos, done, failed) => {
+    storeIntoCache(page, repos, done, failed)
     setRepos({
-      repos,
       page,
+      repos,
       done
     })
   }
@@ -75,14 +76,18 @@ const Repos = () => {
         }
       } catch (e) {
         toast.error('Can not find this user in Github')
+        updateRepos(-1, [], true, true)
         console.log(e)
       }
     }
   }
 
   // check whether all repositories are fetched
-  const checkDone = (page, res, done) => {
-    if (parseInt(page) === 1 && res.length === 0) {
+  const checkDone = (page, res, done, failed) => {
+    if (failed) {
+      toast.error('Can not find this user in Github')
+      return true
+    } else if (parseInt(page) === 1 && res.length === 0) {
       // check if the user don't have any repository
       toast("This user don't have any repository", {
         icon: '🤔'
@@ -97,22 +102,12 @@ const Repos = () => {
     return false
   }
 
-  const getReposList = () => {
-    if (repos.repos.length) {
-      return repos.repos.map((repo, index) => (
-        <li
-          key={index}
-          onClick={() =>
-            navigate(getPath(`/users/${username}/repos/${repo.name}`))
-          }
-          style={{ background: 'yellow' }}
-        >
-          <div>name: {repo.name}</div>
-          <div>star: {repo.star}</div>
-        </li>
-      ))
-    }
-  }
+  const getReposList = () =>
+    repos.repos.map((repo) => ({
+      message: repo.name,
+      link: getPath(`/users/${username}/repos/${repo.name}`),
+      star: repo.star
+    }))
 
   return (
     <div>
@@ -125,7 +120,7 @@ const Repos = () => {
         hasMore={!repos.done}
         loader={<h4>Loading ...</h4>}
       >
-        <ul>{getReposList()}</ul>
+        <List items={getReposList()} type={listType.reposPage} />
       </InfiniteScroll>
       <Toaster position="top-center" reverseOrder={false} />
     </div>

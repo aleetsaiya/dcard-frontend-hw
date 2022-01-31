@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import getPath from '../routeSetting'
+import { getPath } from '../globalSetting'
 
 const NotFound = () => {
   const [seconds, setSeconds] = useState(10)
