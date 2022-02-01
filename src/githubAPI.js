@@ -46,3 +46,17 @@ export const getRepositoryDetail = async (data) => {
     url: url
   }
 }
+
+export const getUserInfo = async (username) => {
+  const res = await axios.request({
+    method: 'Get',
+    url: `https://api.github.com/users/${username}`
+  })
+  const { name, avatar_url: avatarUrl, bio: intro, location } = res.data
+  return {
+    name,
+    avatarUrl,
+    intro,
+    location
+  }
+}
