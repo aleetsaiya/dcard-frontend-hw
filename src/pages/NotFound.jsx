@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getPath } from '../globalSetting'
+import Layout from '../components/Layout'
 
 const NotFound = () => {
   const [seconds, setSeconds] = useState(10)
@@ -25,13 +26,12 @@ const NotFound = () => {
   }
 
   return (
-    <div>
-      <h2>404 page not found</h2>
+    <Layout title="404 Page Not Found">
       <p>Automatically redirect to Home page: {seconds}</p>
       <p>
         Redirect to Home page: <button onClick={redirect}>link</button>
       </p>
-    </div>
+    </Layout>
   )
 }
 

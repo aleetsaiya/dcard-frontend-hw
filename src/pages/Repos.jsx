@@ -78,7 +78,6 @@ const Repos = () => {
       } catch (e) {
         toast.error('Can not find this user in Github')
         updateRepos(-1, [], true, true)
-        console.log(e)
       }
     }
   }
