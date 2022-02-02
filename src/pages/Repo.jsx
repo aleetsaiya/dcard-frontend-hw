@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { getRepositoryDetail } from '../githubAPI'
+import { fetchRepositoryDetail } from '../githubAPI'
 import toast, { Toaster } from 'react-hot-toast'
 import Layout from '../components/Layout'
 
@@ -19,7 +19,7 @@ const Repo = () => {
 
   const loadRepoDetail = async () => {
     try {
-      const res = await getRepositoryDetail({
+      const res = await fetchRepositoryDetail({
         username: username,
         repoName: repo
       })

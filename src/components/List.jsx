@@ -21,7 +21,7 @@ const List = (props) => {
         <Fragment>
           <div>name: {item.message}</div>
           <div>fetched number: {item.num}</div>
-          <div>done: {item.done ? '✔' : '❌'}</div>
+          <div>finish: {item.finish ? '✔' : '❌'}</div>
           <div>success: {item.failed ? '❌' : '✔'}</div>
         </Fragment>
       )
@@ -52,7 +52,7 @@ List.propTypes = {
       link: PropTypes.string,
       star: PropTypes.number,
       num: PropTypes.number,
-      done: PropTypes.bool,
+      finish: PropTypes.bool,
       failed: PropTypes.bool
     })
   ),

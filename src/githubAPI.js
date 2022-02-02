@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-export const getRepositoryList = async (data) => {
-  const { perPage, page, username } = data
+export const fetchRepositoryList = async (username, page, perPage) => {
   const res = await axios.request({
     method: 'Get',
     url: `https://api.github.com/users/${username}/repos`,
@@ -22,7 +21,7 @@ export const getRepositoryList = async (data) => {
   return temp
 }
 
-export const getRepositoryDetail = async (data) => {
+export const fetchRepositoryDetail = async (data) => {
   const { username, repoName } = data
   const res = await axios.request({
     method: 'Get',
@@ -47,7 +46,7 @@ export const getRepositoryDetail = async (data) => {
   }
 }
 
-export const getUserInfo = async (username) => {
+export const fetchUserInfo = async (username) => {
   const res = await axios.request({
     method: 'Get',
     url: `https://api.github.com/users/${username}`

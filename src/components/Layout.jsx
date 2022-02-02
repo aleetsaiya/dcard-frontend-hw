@@ -15,10 +15,7 @@ const Layout = (props) => {
 
 Layout.propTypes = {
   title: PropTypes.string,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.element),
-    PropTypes.element
-  ])
+  children: PropTypes.node
 }
 
 export default Layout

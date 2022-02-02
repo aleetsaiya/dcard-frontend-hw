@@ -21,14 +21,14 @@ const Home = () => {
     const items = { ...sessionStorage }
     const history = []
     for (const item in items) {
-      const [type, name] = item.split('-')
-      if (type === 'repos') {
+      if (item[0] === '$') {
+        const name = item.substring(1)
         const cache = JSON.parse(items[item])
         history.push({
           message: name,
           link: getPath(`/users/${name}/repos`),
           num: cache.repos.length,
-          done: cache.done,
+          finish: cache.finish,
           failed: cache.failed,
           timestamp: cache.timestamp
         })
