@@ -5,26 +5,31 @@
 ## 使用說明
 可以至部屬在 Github Page 的線上環境進行測試: [link](https://aleetsaiya.github.io/dcard-frontend-hw/)
 
-## 功能
+## 待辦
 - [x] Infinite scroll
 - [x] 使用 cache 減少 API 重複送出
 - [x] 紀錄使用者搜尋紀錄
 - [x] 例外處理 (no user、no repository、no repository description)
 - [ ] 頁面美化
 - [ ] RWD
+- [ ] 不同螢幕大小導致 first fetch 的無法觸底 (無法觸發 infinite scroll)
 
 
 ##  目錄
-```bash
-.
+```
 │  App.css
 │  App.js
-│  githubAPI.js           // 處理 github API
-│  index.css              
-│  index.js             
-│  routeSetting.js        // 管理 root route
+│  githubAPI.js            // 處理 github API
+│  globalSetting.js
+│  index.css
+│  index.js
 │
-└─ pages
+├─components
+│      Header.jsx
+│      Layout.jsx
+│      List.jsx
+│
+└─pages
         Home.jsx           // 首頁
         NotFound.jsx       // 404 Error頁面
         Repo.jsx           // Repository List 頁面
