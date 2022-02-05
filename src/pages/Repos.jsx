@@ -151,7 +151,7 @@ const Repos = () => {
 
   return (
     <Layout title="Repository List">
-      {console.log('render', user.repos)}
+      {/* {console.log('render', user.repos)} */}
       {userInfo}
       <div>Legnth: {user.repos.length}</div>
       <InfiniteScroll

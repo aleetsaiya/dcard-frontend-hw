@@ -21,8 +21,7 @@ export const fetchRepositoryList = async (username, page, perPage) => {
   return temp
 }
 
-export const fetchRepositoryDetail = async (data) => {
-  const { username, repoName } = data
+export const fetchRepositoryDetail = async (username, repoName) => {
   const res = await axios.request({
     method: 'Get',
     url: `https://api.github.com/repos/${username}/${repoName}`,
