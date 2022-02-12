@@ -3,17 +3,14 @@ import PropTypes from 'prop-types'
 
 const Header = (props) => {
   const { title } = props
-  const styleCenter = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItem: 'center'
-  }
-  const largeSize = {
-    fontSize: '3rem'
+  const headerStyle = {
+    marginTop: '30px',
+    textAlign: 'center',
+    padding: '0.5rem 0'
   }
   return (
-    <div style={styleCenter}>
-      <h2 style={largeSize}>{title}</h2>
+    <div style={headerStyle}>
+      <h1>{title}</h1>
     </div>
   )
 }

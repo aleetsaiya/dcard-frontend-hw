@@ -137,7 +137,6 @@ const Repos = () => {
       <Image
         src={user.info.avatarUrl || ''}
         roundedCircle={true}
-        thumbnail={true}
         style={{ width: '150px' }}
       />
       <div>User name: {user.info.name}</div>

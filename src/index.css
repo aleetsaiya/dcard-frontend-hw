@@ -1,13 +1,116 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: #001f3f;
+  color: #fff;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input {
+  color: #111;
+  padding: 10px 5px;
+  border: none;
+  margin-right: 8px;
+  width: 100%;
+  outline: none;
+}
+
+button {
+  border: none;
+  background-color: inherit;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+.hp-search {
+  text-align: center;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.hp-search-title {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  color: #fed30f;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.hp-search-input {
+  width: 100%;
+  position: relative;
+}
+
+.hp-search-input-submit {
+  position: absolute;
+  height: 100%;
+  top: 0px;
+  right: 8px;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.hp-history {
+  margin-top: 2rem;
+}
+
+.hp-history-info {
+  display: flex;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.hp-history-info-title {
+  font-size: 2rem;
+}
+
+.hp-history-info-clear {
+  color: #fff;
+  font-size: .8rem;
+  position: absolute;
+  right: 5px;
+  bottom: 0px;
+}
+
+.hp-history-info-clear:hover {
+  color: #e7e7e7
+}
+
+
+@media (max-width: 768px){
+  div{
+    font-size: .8rem;
+  }
+  h1 {
+    font-size: 2.5rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
+  .hp-search {
+    width: 80%;
+  }
+  .hp-search-title {
+    font-size: 1rem;
+  }
 }
