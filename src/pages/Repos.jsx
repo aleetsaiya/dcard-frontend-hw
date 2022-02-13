@@ -6,7 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { getPath, listType } from '../globalSetting'
 import List from '../components/List'
 import Layout from '../components/Layout'
-import Image from 'react-bootstrap/Image'
+import Card from '../components/Card'
 
 const Repos = () => {
   const { username } = useParams()
@@ -131,39 +131,34 @@ const Repos = () => {
     <div style={{ textAlign: 'center', fontSize: '1rem' }}>Loading ...</div>
   )
 
-  const userInfo = user.info.avatarUrl
-    ? (
-    <div>
-      <Image
-        src={user.info.avatarUrl || ''}
-        roundedCircle={true}
-        style={{ width: '150px' }}
-      />
-      <div>User name: {user.info.name}</div>
-      <div>Intro: {user.info.intro}</div>
-      <div>Location: {user.info.location}</div>
-    </div>
-      )
-    : (
-        ''
-      )
-
   return (
     <Layout title="Repository List">
-      {/* {console.log('render', user.repos)} */}
-      {userInfo}
-      <div>Legnth: {user.repos.length}</div>
-      <InfiniteScroll
-        dataLength={user.repos.length}
-        next={async () => {
-          const [repos, page, finish, failed] = await getReposList()
-          setCacheAndState(user.info, repos, page, finish, failed)
-        }}
-        hasMore={!user.finish}
-        loader={loader}
+      <div
+        className="reps-info"
+        style={user.info.avatarUrl ? {} : { display: 'none' }}
       >
-        <List items={mapReposToList()} type={listType.reposPage} />
-      </InfiniteScroll>
+        <Card
+          avatarUrl={user.info.avatarUrl}
+          name={user.info.name}
+          location={user.info.location}
+          intro={user.info.intro}
+          githubUrl={'https://github.com/' + username.trim()}
+        />
+      </div>
+      <div className="reps-list">
+        <h3 className="reps-list-title">Repositroies</h3>
+        <InfiniteScroll
+          dataLength={user.repos.length}
+          next={async () => {
+            const [repos, page, finish, failed] = await getReposList()
+            setCacheAndState(user.info, repos, page, finish, failed)
+          }}
+          hasMore={!user.finish}
+          loader={loader}
+        >
+          <List items={mapReposToList()} type={listType.reposPage} />
+        </InfiniteScroll>
+      </div>
       <Toaster position="bottom-center" reverseOrder={false} />
     </Layout>
   )

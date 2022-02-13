@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { ListGroup, ListGroupItem } from 'react-bootstrap'
+import { ListGroup, ListGroupItem, Image } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { listType } from '../globalSetting'
+import { AiFillStar } from 'react-icons/ai'
+import { FaUser } from 'react-icons/fa'
 
 const List = (props) => {
   const { items, type } = props
@@ -12,17 +14,37 @@ const List = (props) => {
     if (type === listType.reposPage) {
       return (
         <Fragment>
-          <div>name: {item.message}</div>
-          <div>⭐: {item.star}</div>
+          <div className="list-item-title">{item.message}</div>
+          <div className="list-item-message">
+            <AiFillStar className="list-item-message-star" />
+            {item.star}
+          </div>
         </Fragment>
       )
     } else if (type === listType.homePage) {
       return (
         <Fragment>
-          <div>name: {item.message}</div>
-          <div>fetched number: {item.num}</div>
-          <div>finish: {item.finish ? '✔' : '❌'}</div>
-          <div>success: {item.failed ? '❌' : '✔'}</div>
+          {item.avatarUrl
+            ? (
+            <Image
+              src={item.avatarUrl}
+              roundedCircle={true}
+              className="list-item-avatar"
+            />
+              )
+            : (
+            <FaUser className="list-item-avatar" />
+              )}
+
+          <div className="list-item-info">
+            <div className="list-item-info-title">{item.message}</div>
+            <div className="list-item-info-status">
+              Fetch Finish :{' '}
+              <span className="list-item-info-status-icon">
+                {item.finish ? '✅' : '❌'}
+              </span>
+            </div>
+          </div>
         </Fragment>
       )
     }
@@ -33,27 +55,25 @@ const List = (props) => {
       return (
         <ListGroupItem
           key={index}
-          variant={index % 2 === 0 ? 'primary' : 'light'}
-          action
           onClick={() => navigate(item.link)}
+          className="list-item"
         >
           {getDetail(item)}
         </ListGroupItem>
       )
     })
 
-  return <ListGroup>{getItems()}</ListGroup>
+  return <ListGroup className="list">{getItems()}</ListGroup>
 }
 
 List.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
+      avatarUrl: PropTypes.string,
       message: PropTypes.string,
       link: PropTypes.string,
       star: PropTypes.number,
-      num: PropTypes.number,
-      finish: PropTypes.bool,
-      failed: PropTypes.bool
+      finish: PropTypes.bool
     })
   ),
   type: PropTypes.string

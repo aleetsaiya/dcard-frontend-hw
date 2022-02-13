@@ -10,9 +10,9 @@
 - [x] 使用 cache 減少 API 重複送出
 - [x] 紀錄使用者搜尋紀錄
 - [x] 例外處理 (no user、no repository、no repository description)
-- [ ] 頁面美化
-- [ ] RWD
-- [ ] 不同螢幕大小導致 first fetch 的無法觸底 (無法觸發 infinite scroll)
+- [x] RWD
+- [ ] style Repo page
+- [ ] Scroll to the top button
 
 
 ##  目錄

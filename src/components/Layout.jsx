@@ -9,7 +9,7 @@ const Layout = (props) => {
     <Fragment>
       <Header title={title}></Header>
       <Container>{children}</Container>
-      <div style={{ height: '80px' }}></div>
+      <div style={{ height: '50px' }}></div>
     </Fragment>
   )
 }

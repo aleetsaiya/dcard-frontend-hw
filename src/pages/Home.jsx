@@ -26,11 +26,9 @@ const Home = () => {
         const cache = JSON.parse(items[item])
         history.push({
           message: name,
+          avatarUrl: cache.info.avatarUrl,
           link: getPath(`/users/${name}/repos`),
-          num: cache.repos.length,
-          finish: cache.finish,
-          failed: cache.failed,
-          timestamp: cache.timestamp
+          finish: cache.finish
         })
       }
     }
@@ -102,6 +100,7 @@ const Home = () => {
             className="hp-history-info-clear"
             onClick={clearHistory}
             disabled={searchHistory.length === 0}
+            style={searchHistory.length === 0 ? { display: 'none' } : {}}
           >
             Clear history
           </button>
