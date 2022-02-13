@@ -105,6 +105,9 @@ h3 {
   .hp-search-title {
     font-size: 1rem;
   }
+  .hp-history {
+    width: 100%;
+  }
 }
 
 .reps-info {
@@ -172,11 +175,38 @@ h3 {
 .list-item-message {
   font-size: .9rem;
   position: absolute;
-  right: 3rem;
+  right: 1.5rem;
 }
 
 .list-item-message-star {
   margin-right: 3px;
+}
+
+@media (max-width: 768px) {
+  .reps-list {
+    width: 100%;
+  }
+  .list-item {
+    margin-bottom: 2rem;
+  }
+  .list-item-avatar {
+    width: 3rem;
+  }
+  .list-item-info-title {
+    font-size: 1rem;
+  }
+  .list-item-info-status {
+    font-size: .5rem;
+  }
+  .list-item-info-status-icon {
+    font-size: .7rem;
+  }
+  .list-item-message {
+    font-size: .5rem;
+  }
+  .list-item-message-star {
+    font-size: .5rem;
+  }
 }
 
 .custom-card {
