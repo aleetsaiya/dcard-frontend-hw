@@ -28,7 +28,6 @@ const Repos = () => {
     const cache = getCache()
     if (cache) {
       setUser(cache)
-      handleToast(cache.page, cache.finish, cache.failed)
     } else {
       const info = await getUserInfo()
       if (info) {
@@ -145,7 +144,10 @@ const Repos = () => {
           githubUrl={'https://github.com/' + username.trim()}
         />
       </div>
-      <div className="reps-list">
+      <div
+        className="reps-list"
+        style={user.info.avatarUrl ? {} : { display: 'none' }}
+      >
         <h3 className="reps-list-title">Repositroies</h3>
         <InfiniteScroll
           dataLength={user.repos.length}

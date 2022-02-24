@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getPath, listType } from '../globalSetting'
-import List from '../components/List'
+import { getPath } from '../globalSetting'
 import Layout from '../components/Layout'
+import History from '../components/History'
 import toast, { Toaster } from 'react-hot-toast'
 import { AiOutlineArrowRight } from 'react-icons/ai'
 
@@ -71,10 +71,10 @@ const Home = () => {
     }
   }
 
-  const clearHistory = () => {
+  const clearHistory = useCallback(() => {
     sessionStorage.clear()
     setSearchHistory([])
-  }
+  }, [])
 
   return (
     <Layout title="Home">
@@ -93,21 +93,8 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <div className="hp-history">
-        <div className="hp-history-info">
-          <h3 className="hp-history-info-title">History</h3>
-          <button
-            className="hp-history-info-clear"
-            onClick={clearHistory}
-            disabled={searchHistory.length === 0}
-            style={searchHistory.length === 0 ? { display: 'none' } : {}}
-          >
-            Clear history
-          </button>
-        </div>
-        <List items={searchHistory} type={listType.homePage} />
-        <Toaster position="bottom-center" reverseOrder={false} />
-      </div>
+      <History clearHistory={clearHistory} searchHistory={searchHistory} />
+      <Toaster position="bottom-center" reverseOrder={false} />
     </Layout>
   )
 }
