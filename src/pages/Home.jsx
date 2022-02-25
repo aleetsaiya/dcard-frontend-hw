@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getPath } from '../globalSetting'
 import Layout from '../components/Layout'
@@ -8,34 +8,10 @@ import { AiOutlineArrowRight } from 'react-icons/ai'
 
 const Home = () => {
   const [username, setUsername] = useState('')
-  const [searchHistory, setSearchHistory] = useState([])
   const navigate = useNavigate()
 
-  // init
-  useEffect(() => {
-    setSearchHistory(getSearchHistory())
-  }, [])
-
-  const getSearchHistory = () => {
-    // get all items in sessionStorage
-    const items = { ...sessionStorage }
-    const history = []
-    for (const item in items) {
-      if (item[0] === '$') {
-        const name = item.substring(1)
-        const cache = JSON.parse(items[item])
-        history.push({
-          message: name,
-          avatarUrl: cache.info.avatarUrl,
-          link: getPath(`/users/${name}/repos`),
-          finish: cache.finish
-        })
-      }
-    }
-    return history
-  }
-
   const isValidUser = (username) => {
+    // invalid username condition
     if (username[0] === '-' || username[username.length - 1] === '-') {
       toast.error(username + 'is not a valid username')
       return false
@@ -71,11 +47,6 @@ const Home = () => {
     }
   }
 
-  const clearHistory = useCallback(() => {
-    sessionStorage.clear()
-    setSearchHistory([])
-  }, [])
-
   return (
     <Layout title="Home">
       <div className="hp-search">
@@ -93,7 +64,7 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <History clearHistory={clearHistory} searchHistory={searchHistory} />
+      <History />
       <Toaster position="bottom-center" reverseOrder={false} />
     </Layout>
   )

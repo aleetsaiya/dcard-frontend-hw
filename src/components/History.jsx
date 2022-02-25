@@ -1,10 +1,34 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import List from './List'
-import { listType } from '../globalSetting'
-import PropTypes from 'prop-types'
+import { listType, getPath } from '../globalSetting'
 
-const History = (props) => {
-  const { searchHistory, clearHistory } = props
+const getSearchHistory = () => {
+  // get all items in sessionStorage
+  const items = { ...sessionStorage }
+  const history = []
+  for (const item in items) {
+    if (item[0] === '$') {
+      const name = item.substring(1)
+      const cache = JSON.parse(items[item])
+      history.push({
+        message: name,
+        avatarUrl: cache.info.avatarUrl,
+        link: getPath(`/users/${name}/repos`),
+        finish: cache.finish
+      })
+    }
+  }
+  return history
+}
+
+const History = () => {
+  const his = getSearchHistory()
+  const [searchHistory, setSearchHistory] = useState(his)
+
+  const clearHistory = useCallback(() => {
+    sessionStorage.clear()
+    setSearchHistory([])
+  }, [])
 
   return (
     <div className="hp-history">
@@ -23,11 +47,6 @@ const History = (props) => {
       <List items={searchHistory} type={listType.homePage} />
     </div>
   )
-}
-
-History.propTypes = {
-  searchHistory: PropTypes.array,
-  clearHistory: PropTypes.func
 }
 
 export default React.memo(History)
