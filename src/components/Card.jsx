@@ -29,4 +29,4 @@ Card.propTypes = {
   githubUrl: PropTypes.string
 }
 
-export default Card
+export default React.memo(Card)
