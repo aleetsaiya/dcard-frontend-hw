@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { ListGroup, ListGroupItem, Image } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { listType } from '../globalSetting'
 import { AiFillStar } from 'react-icons/ai'
@@ -26,11 +25,7 @@ const List = (props) => {
         <Fragment>
           {item.avatarUrl
             ? (
-            <Image
-              src={item.avatarUrl}
-              roundedCircle={true}
-              className="list-item-avatar"
-            />
+            <img src={item.avatarUrl} className="list-item-avatar" />
               )
             : (
             <FaUser className="list-item-avatar" />
@@ -39,7 +34,7 @@ const List = (props) => {
           <div className="list-item-info">
             <div className="list-item-info-title">{item.message}</div>
             <div className="list-item-info-status">
-              Fetch Finish :{' '}
+              Fetch all :{' '}
               <span className="list-item-info-status-icon">
                 {item.finish ? '✅' : '❌'}
               </span>
@@ -53,17 +48,17 @@ const List = (props) => {
   const getItems = () =>
     items.map((item, index) => {
       return (
-        <ListGroupItem
+        <li
           key={index}
           onClick={() => navigate(item.link)}
           className="list-item"
         >
           {getDetail(item)}
-        </ListGroupItem>
+        </li>
       )
     })
 
-  return <ListGroup className="list">{getItems()}</ListGroup>
+  return <ul className="list">{getItems()}</ul>
 }
 
 List.propTypes = {

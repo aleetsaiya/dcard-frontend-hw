@@ -35,13 +35,15 @@ export const fetchRepositoryDetail = async (username, repoName) => {
     full_name: name,
     stargazers_count: star,
     html_url: url,
+    language,
     description
   } = res.data
   return {
-    name: name,
-    description: description,
-    star: star,
-    url: url
+    name,
+    description,
+    star,
+    url,
+    language
   }
 }
 

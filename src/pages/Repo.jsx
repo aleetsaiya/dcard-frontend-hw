@@ -1,62 +1,67 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { fetchRepositoryDetail } from '../githubAPI'
-import toast, { Toaster } from 'react-hot-toast'
 import Layout from '../components/Layout'
+import Alert from '../components/Alert'
 
 const Repo = () => {
   const { username: userName, repo: repoName } = useParams()
-  const [repoDetail, setRepoDetail] = useState({
+  const [repo, setRepo] = useState({
     name: '',
     description: '',
     star: 0,
-    url: ''
+    url: '',
+    language: ''
+  })
+  const [alert, setAlert] = useState({
+    type: '',
+    message: '',
+    show: false
   })
 
   useEffect(async () => {
-    const data = await getRepoDetail()
-    setRepoDetail({
-      name: data.name,
-      description: data.description,
-      star: data.star,
-      url: data.url
-    })
+    const res = await getRepoDetail()
+    if (res) {
+      setRepo({
+        name: res.name,
+        description: res.description,
+        star: res.star,
+        url: res.url,
+        language: res.language
+      })
+    }
   }, [])
 
   const getRepoDetail = async () => {
     try {
       const res = await fetchRepositoryDetail(userName, repoName)
-      handleToast(false, res.description)
       return res
     } catch (e) {
-      handleToast(true)
-    }
-  }
-
-  const handleToast = (failed, description) => {
-    if (failed) {
-      toast.error('Request Failed')
-    } else if (!description) {
-      toast("This repository don't have description", {
-        icon: '🤨'
+      setAlert({
+        type: 'danger',
+        message: 'Request Failed!',
+        show: true
       })
     }
   }
 
+  const displayStyled = () => (repo.name === '' ? { display: 'none' } : {})
+
   return (
     <Layout title="Repository">
-      <ul>
-        <li>full_name: {repoDetail.name}</li>
-        <li>description: {repoDetail.description}</li>
-        <li>star: {repoDetail.star}</li>
+      <ul style={displayStyled()}>
+        <li>full_name: {repo.name}</li>
+        <li>description: {repo.description}</li>
+        <li>star: {repo.star}</li>
         <li>
           url:
-          <a href={repoDetail.url} target="_blank" rel="noreferrer">
+          <a href={repo.url} target="_blank" rel="noreferrer">
             link
           </a>
         </li>
+        <li>language: {repo.language}</li>
       </ul>
-      <Toaster position="bottom-center" reverseOrder={false} />
+      <Alert {...alert} />
     </Layout>
   )
 }

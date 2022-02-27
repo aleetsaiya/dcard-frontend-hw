@@ -32,7 +32,6 @@ const History = () => {
 
   return (
     <div className="hp-history">
-      {console.log('his re-render')}
       <div className="hp-history-info">
         <h3 className="hp-history-info-title">History</h3>
         <button

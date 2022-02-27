@@ -1,16 +1,15 @@
-import React, { Fragment } from 'react'
-import { Container } from 'react-bootstrap'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Header from './Header'
 
 const Layout = (props) => {
   const { title, children } = props
   return (
-    <Fragment>
+    <div className="container">
       <Header title={title}></Header>
-      <Container>{children}</Container>
+      {children}
       <div style={{ height: '50px' }}></div>
-    </Fragment>
+    </div>
   )
 }
 

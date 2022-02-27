@@ -1,5 +1,4 @@
 import React from 'react'
-import { Image } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { GoLocation } from 'react-icons/go'
 
@@ -8,11 +7,7 @@ const Card = (props) => {
 
   return (
     <div className="custom-card">
-      <Image
-        className="custom-card-avatar"
-        src={avatarUrl}
-        roundedCircle={true}
-      />
+      <img className="custom-card-avatar" src={avatarUrl} />
       <div className="custom-card-name">{name}</div>
       <div className="custom-card-location">
         {location ? <GoLocation className="custom-card-location-icon" /> : ''}

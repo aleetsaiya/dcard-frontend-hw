@@ -3,17 +3,18 @@ import { useNavigate } from 'react-router-dom'
 import { getPath } from '../globalSetting'
 import Layout from '../components/Layout'
 import History from '../components/History'
-import toast, { Toaster } from 'react-hot-toast'
+import Alert from '../components/Alert'
 import { AiOutlineArrowRight } from 'react-icons/ai'
 
 const Home = () => {
   const [username, setUsername] = useState('')
+  const [showAlert, setShowAlert] = useState(false)
   const navigate = useNavigate()
 
   const isValidUser = (username) => {
     // invalid username condition
     if (username[0] === '-' || username[username.length - 1] === '-') {
-      toast.error(username + 'is not a valid username')
+      setShowAlert(true)
       return false
     }
     for (const c of username) {
@@ -25,7 +26,7 @@ const Home = () => {
           c === '-'
         )
       ) {
-        toast.error(username + ' is not a valid username')
+        setShowAlert(true)
         return false
       }
     }
@@ -38,12 +39,14 @@ const Home = () => {
 
   const submit = () => {
     if (isValidUser(username)) navigate(getPath(`/users/${username}/repos`))
+    else setUsername('')
   }
 
   const checkPressEnter = (e) => {
     // if press enter
-    if (e.keyCode === 13 && isValidUser(username)) {
-      navigate(getPath(`/users/${username}/repos`))
+    if (e.keyCode === 13) {
+      if (isValidUser(username)) navigate(getPath(`/users/${username}/repos`))
+      else setUsername('')
     }
   }
 
@@ -63,9 +66,13 @@ const Home = () => {
             <AiOutlineArrowRight />
           </button>
         </div>
+        <Alert
+          message="Not a valid user name"
+          type="danger"
+          show={showAlert}
+        />
       </div>
       <History />
-      <Toaster position="bottom-center" reverseOrder={false} />
     </Layout>
   )
 }
