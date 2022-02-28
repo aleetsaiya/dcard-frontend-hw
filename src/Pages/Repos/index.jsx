@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { fetchRepositoryDetail } from '../githubAPI'
-import Layout from '../components/Layout'
-import Alert from '../components/Alert'
+import { fetchRepositoryDetail } from '../../Api/githubAPI'
+import Layout from '../../Layouts'
+import Alert from '../../Components/Alert/'
 
-const Repo = () => {
+const Repos = () => {
   const { username: userName, repo: repoName } = useParams()
   const [repo, setRepo] = useState({
     name: '',
@@ -66,4 +66,4 @@ const Repo = () => {
   )
 }
 
-export default Repo
+export default Repos

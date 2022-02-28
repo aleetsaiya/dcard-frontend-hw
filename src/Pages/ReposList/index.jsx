@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { fetchRepositoryList, fetchUserInfo } from '../githubAPI'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import { getPath, listType } from '../globalSetting'
-import List from '../components/List'
-import Layout from '../components/Layout'
-import Card from '../components/Card'
-import Alert from '../components/Alert'
+import { useParams, useNavigate } from 'react-router-dom'
+import setRoutes from '../../Routes/setting'
 
-const Repos = () => {
+import Layout from '../../Layouts'
+import List from '../../Components/List/'
+import Item from '../../Components/List/Item'
+import Card from '../../Components/Card/'
+import Alert from '../../Components/Alert/'
+import Loader from '../../Components/Loader'
+import './style.css'
+
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { fetchRepositoryList, fetchUserInfo } from '../../Api/githubAPI'
+
+const ReposList = () => {
   const { username } = useParams()
+  const navigate = useNavigate()
   const cache = JSON.parse(sessionStorage.getItem(`$${username}`))
   const [user, setUser] = useState({
     info: {
@@ -27,11 +33,13 @@ const Repos = () => {
     type: cache ? cache.alert.type : '',
     show: cache ? cache.alert.show : false
   })
+  const [isLoading, setIsLoading] = useState(false)
 
   // init >> if don't have cache, send api to get user information and reposotory
   useEffect(async () => {
     if (!cache) {
       // send api to get user info
+      setIsLoading(true)
       const info = await getUserInfo()
       // if get info success
       if (info) {
@@ -77,6 +85,7 @@ const Repos = () => {
           })
         }
       }
+      setIsLoading(false)
     }
   }, [])
 
@@ -120,17 +129,18 @@ const Repos = () => {
   const mapReposToList = () =>
     user.repos.map((repo) => ({
       message: repo.name,
-      link: getPath(`/users/${username}/repos/${repo.name}`),
-      star: repo.star
+      small: '⭐' + repo.star,
+      onClick: () =>
+        navigate(setRoutes(`/users/${username}/repos/${repo.name}`))
     }))
 
-  const loader = (
+  const loadingText = (
     <div style={{ textAlign: 'center', fontSize: '1rem' }}>Loading ...</div>
   )
 
-  const haveThisUser = () => (user.info.avatarUrl ? {} : { display: 'none' })
+  const displayStyled = user.info.avatarUrl ? {} : { display: 'none' }
 
-  const loadMoreRepos = async () => {
+  const getMoreRepos = async () => {
     const res = await getReposList()
     if (res) {
       const repos = [...user.repos, ...res]
@@ -165,31 +175,36 @@ const Repos = () => {
     }
   }
 
+  const userIntro = !user.info.intro
+    ? "[Auto] This user don't have personal introduce."
+    : user.info.intro
+
   return (
     <Layout title="Repository List">
-      {console.log('render list')}
-      <div className="reps-info" style={haveThisUser()}>
+      <Loader show={isLoading} />
+      <div style={displayStyled} className="reps-card">
         <Card
           avatarUrl={user.info.avatarUrl}
           name={user.info.name}
           location={user.info.location}
-          intro={user.info.intro}
-          githubUrl={'https://github.com/' + username.trim()}
+          intro={userIntro}
+          outerLinkName="Github"
+          outerLink={'https://github.com/' + username.trim()}
         />
       </div>
-      <div className="reps-list" style={haveThisUser()}>
-        <Alert {...alert} />
+      <Alert {...alert} />
+      <div className="reps-list" style={displayStyled}>
         <InfiniteScroll
           dataLength={user.repos.length}
-          next={loadMoreRepos}
+          next={getMoreRepos}
           hasMore={!user.finish}
-          loader={loader}
+          loader={loadingText}
         >
-          <List items={mapReposToList()} type={listType.reposPage} />
+          <List ListItem={Item} items={mapReposToList()} />
         </InfiniteScroll>
       </div>
     </Layout>
   )
 }
 
-export default Repos
+export default ReposList

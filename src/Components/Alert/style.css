@@ -1,0 +1,42 @@
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 0.5rem 2.5rem;
+  font-size: 1rem;
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.alert-icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+}
+
+.alert-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.alert-success {
+  background-color: #66bb6a;
+  color: #fff;
+}
+
+.alert-warning {
+  background-color: #ffc104;
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .alert {
+    font-size: 0.8rem;
+    padding-left: 2rem;
+  }
+  .alert-icon {
+    left: 0.8rem;
+  }
+}

@@ -1,21 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Header from './Header'
+import Main from './Main'
+import Footer from './Footer'
+
+const propTypes = {
+  title: PropTypes.string,
+  children: PropTypes.node
+}
 
 const Layout = (props) => {
   const { title, children } = props
   return (
     <div className="container">
       <Header title={title}></Header>
-      {children}
-      <div style={{ height: '50px' }}></div>
+      <Main>{children}</Main>
+      <Footer />
     </div>
   )
 }
 
-Layout.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.node
-}
+Layout.propTypes = propTypes
 
 export default Layout
