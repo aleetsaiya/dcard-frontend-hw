@@ -12,7 +12,7 @@ const propTypes = {
   outerLinkName: PropTypes.string
 }
 
-const Card = (props) => {
+const UserCard = (props) => {
   const { avatarUrl, name, location, intro, outerLink, outerLinkName } = props
 
   return (
@@ -40,6 +40,6 @@ const Card = (props) => {
   )
 }
 
-Card.propTypes = propTypes
+UserCard.propTypes = propTypes
 
-export default React.memo(Card)
+export default React.memo(UserCard)

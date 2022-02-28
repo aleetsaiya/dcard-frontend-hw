@@ -45,6 +45,7 @@ const History = () => {
       >
         Clear history
       </button>
+      {his.length === 0 ? <div style={{ textAlign: 'center' }}>Empty</div> : ''}
       <List ListItem={ItemWithPhoto} items={searchHistory} />
     </div>
   )

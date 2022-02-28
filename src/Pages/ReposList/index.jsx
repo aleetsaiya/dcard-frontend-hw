@@ -5,7 +5,7 @@ import setRoutes from '../../Routes/setting'
 import Layout from '../../Layouts'
 import List from '../../Components/List/'
 import Item from '../../Components/List/Item'
-import Card from '../../Components/Card/'
+import UserCard from '../../Components/UserCard/'
 import Alert from '../../Components/Alert/'
 import Loader from '../../Components/Loader'
 import './style.css'
@@ -98,7 +98,7 @@ const ReposList = () => {
       // requset failed >> do not cache the user
       setAlert({
         type: 'danger',
-        message: 'Requset user information failed!',
+        message: 'Requset failed!',
         show: true
       })
     }
@@ -115,7 +115,7 @@ const ReposList = () => {
         // fetch repositories failed
         setAlert({
           type: 'danger',
-          message: 'Fetch repositories failed!',
+          message: 'Request failed!',
           show: true
         })
       }
@@ -183,7 +183,7 @@ const ReposList = () => {
     <Layout title="Repository List">
       <Loader show={isLoading} />
       <div style={displayStyled} className="reps-card">
-        <Card
+        <UserCard
           avatarUrl={user.info.avatarUrl}
           name={user.info.name}
           location={user.info.location}

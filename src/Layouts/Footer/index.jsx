@@ -2,4 +2,4 @@ import React from 'react'
 
 const Footer = () => <div style={{ height: '50px' }}></div>
 
-export default Footer
+export default React.memo(Footer)
