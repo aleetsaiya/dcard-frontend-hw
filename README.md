@@ -10,12 +10,13 @@ The easiest way to use this app is by visiting the online app, but you can also 
 
 Download to local environment:  
 1. `git clone https://github.com/aleetsaiya/dcard-frontend-hw.git` to clone this repository
-2. run `npm install` to install dependencies
-3. run `npm start`
+2. `cd dcard-frontend-hw`
+3. run `npm install` to install dependencies
+4. run `npm start`
 
 App should now be running on `http://localhost:3000/dcard-frontend-hw`
 
-Visit Online App: [link](https://aleetsaiya.github.io/dcard-frontend-hw/)
+**Visit Online App**: [link](https://aleetsaiya.github.io/dcard-frontend-hw/)
 
 
 ## Features
