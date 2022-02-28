@@ -1,47 +1,45 @@
 # Dcard Frontend intern hw
 
-透過串接 Github API，查找使用者所擁有的 repositories 以及各 repository 的詳細內容。
+[**Visit online app**](https://aleetsaiya.github.io/dcard-frontend-hw/)
 
-## 使用說明
-可以至部屬在 Github Page 的線上環境進行測試: [link](https://aleetsaiya.github.io/dcard-frontend-hw/)
+## About this app
+This app is dcard frontend internship homework. We can search a Github user in this app then it will show repositories that the user has.
 
-## 待辦
-- [x] Infinite scroll
-- [x] 使用 cache 減少 API 重複送出
-- [x] 紀錄使用者搜尋紀錄
-- [x] 例外處理 (no user、no repository、no repository description)
-- [x] RWD
-- [ ] style Repo page
-- [ ] Scroll to the top button
+## Usage
+The easiest way to use this app is by visiting the online app, but you can also download it to your local environment.  
+
+Download to local environment:  
+1. `git clone https://github.com/aleetsaiya/dcard-frontend-hw.git` to clone this repository
+2. run `npm install` to install dependencies
+3. run `npm start`
+
+App should now be running on `http://localhost:3000/dcard-frontend-hw`
+
+Visit Online App: [link](https://aleetsaiya.github.io/dcard-frontend-hw/)
 
 
-##  目錄
-```
-│  App.css
-│  App.js
-│  githubAPI.js            // 處理 github API
-│  globalSetting.js
-│  index.css
-│  index.js
-│
-├─components
-│      Header.jsx
-│      Layout.jsx
-│      List.jsx
-│
-└─pages
-        Home.jsx           // 首頁
-        NotFound.jsx       // 404 Error頁面
-        Repo.jsx           // Repository List 頁面
-        Repos.jsx          // Repository Detail 頁面
-```
+## Features
++ RWD
++ Infinite scroll
++ Use `sessionStorage` to cache API response
++ Alert when error occur
 
-## 路由
 
-因為是上架在 GithubPage 上，因此我將 root 設定成這份 repository 的名稱。  
+## File Structure
+| Folder or file       | Description
+| -------------------- | --------------------------------------------
+| `src/Components`     | Any components that can be used anywhere
+| `src/Layouts`        | Build each page layout
+| `src/Routes`         | Application routes
+| `src/API`            | All of Apis in our App
+| `src/Pages`          | All of pages in our App
+| `src/Pages/Home`     | Page to input username
+| `src/Pages/ReposList`| Page show all of the user's repositories
+| `src/Pages/Repos`    | Page show repository detail
 
-+ root: `/dcard-frontend-hw`。
-+ Home Page: `root`。
-+ Repository List Page: `root` + `/users/{username}/repos`。
-+ Repository Detail Page:  `root` + `/users/{username}/repos/{repo}`。
 
+
+## Plan to do in the future
+- [ ] add scroll to top button
+- [ ] style Repos and Notfound page
+- [ ] re-write the layout
