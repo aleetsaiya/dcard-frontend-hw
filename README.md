@@ -24,6 +24,7 @@ App should now be running on `http://localhost:3000/dcard-frontend-hw`
 + Infinite scroll
 + Use `sessionStorage` to cache API response
 + Alert when error occur
++ Scroll to top button
 
 
 ## File Structure
@@ -41,6 +42,4 @@ App should now be running on `http://localhost:3000/dcard-frontend-hw`
 
 
 ## Plan to do in the future
-- [ ] add scroll to top button
-- [ ] style Repos and Notfound page
 - [ ] re-write the layout
