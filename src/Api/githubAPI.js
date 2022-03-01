@@ -52,11 +52,22 @@ export const fetchUserInfo = async (username) => {
     method: 'Get',
     url: `https://api.github.com/users/${username}`
   })
-  const { name, avatar_url: avatarUrl, bio: intro, location } = res.data
+  const {
+    name,
+    avatar_url: avatarUrl,
+    bio: intro,
+    location,
+    email,
+    followers,
+    following
+  } = res.data
   return {
     name,
     avatarUrl,
     intro,
-    location
+    location,
+    email,
+    followers,
+    following
   }
 }

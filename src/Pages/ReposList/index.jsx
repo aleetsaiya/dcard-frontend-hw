@@ -5,7 +5,7 @@ import setRoutes from '../../Routes/setting'
 import Layout from '../../Layouts'
 import List from '../../Components/List/'
 import Item from '../../Components/List/Item'
-import UserCard from '../../Components/UserCard/'
+import UserCard from '../../Components/Card/UserCard/'
 import Alert from '../../Components/Alert/'
 import Loader from '../../Components/Loader'
 import './style.css'
@@ -22,7 +22,10 @@ const ReposList = () => {
       name: cache ? cache.info.name : '',
       avatarUrl: cache ? cache.info.avatarUrl : '',
       intro: cache ? cache.info.intro : '',
-      location: cache ? cache.info.location : ''
+      location: cache ? cache.info.location : '',
+      email: cache ? cache.info.email : '',
+      followers: cache ? cache.info.followers : '',
+      following: cache ? cache.info.following : ''
     },
     repos: cache ? cache.repos : [],
     page: cache ? cache.page : 0,
@@ -186,10 +189,13 @@ const ReposList = () => {
         <UserCard
           avatarUrl={user.info.avatarUrl}
           name={user.info.name}
-          location={user.info.location}
           intro={userIntro}
-          outerLinkName="Github"
-          outerLink={'https://github.com/' + username.trim()}
+          location={user.info.location}
+          socialName="Github"
+          socialLink={'https://github.com/' + username.trim()}
+          followers={user.info.followers}
+          following={user.info.following}
+          email={user.info.email}
         />
       </div>
       <Alert {...alert} />
