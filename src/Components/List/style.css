@@ -49,3 +49,9 @@
 .item-small {
   font-size: 0.8rem;
 }
+
+@media (max-width: 768px) {
+  .item-message {
+    font-size: 0.9rem;
+  }
+}
