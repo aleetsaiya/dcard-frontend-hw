@@ -25,8 +25,8 @@ const Repos = () => {
   })
 
   useEffect(async () => {
-    const res = await getRepoDetail()
-    if (res) {
+    try {
+      const res = await getRepoDetail()
       setRepo({
         name: res.name,
         description: res.description,
@@ -34,8 +34,9 @@ const Repos = () => {
         url: res.url,
         language: res.language
       })
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }, [])
 
   const getRepoDetail = async () => {

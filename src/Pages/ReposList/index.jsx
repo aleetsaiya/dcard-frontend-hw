@@ -41,49 +41,51 @@ const ReposList = () => {
   // init >> if don't have cache, send api to get user information and reposotory
   useEffect(async () => {
     if (!cache) {
-      // send api to get user info
-      const info = await getUserInfo()
-      let repos = await getReposList()
+      try {
+        // send api to get user info
+        const info = await getUserInfo()
+        let repos = await getReposList()
 
-      repos = [...user.repos, ...repos]
-      const finish = repos.length < 10
-      const page = user.page + 1
-      let alert = {
-        message: '',
-        type: '',
-        show: false
-      }
-      if (repos.length === 0) {
-        alert = {
-          type: 'warning',
-          message: "This user don't have any repository",
-          show: true
+        repos = [...user.repos, ...repos]
+        const finish = repos.length < 10
+        const page = user.page + 1
+        let alert = {
+          message: '',
+          type: '',
+          show: false
         }
-        setAlert(alert)
-      } else if (finish) {
-        alert = {
-          type: 'success',
-          message: 'Get all repositories!',
-          show: true
+        if (repos.length === 0) {
+          alert = {
+            type: 'warning',
+            message: "This user don't have any repository",
+            show: true
+          }
+          setAlert(alert)
+        } else if (finish) {
+          alert = {
+            type: 'success',
+            message: 'Get all repositories!',
+            show: true
+          }
+          setAlert(alert)
         }
-        setAlert(alert)
+
+        setUser({
+          info,
+          repos,
+          page,
+          finish
+        })
+        setCache({
+          info,
+          repos,
+          page,
+          finish,
+          alert
+        })
+      } finally {
+        setIsLoading(false)
       }
-
-      setUser({
-        info,
-        repos,
-        page,
-        finish
-      })
-      setCache({
-        info,
-        repos,
-        page,
-        finish,
-        alert
-      })
-
-      setIsLoading(false)
     }
   }, [])
 
