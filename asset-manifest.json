@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/dcard-frontend-hw/static/css/main.953a769f.css",
+    "main.css": "/dcard-frontend-hw/static/css/main.363caa4a.css",
     "main.js": "/dcard-frontend-hw/static/js/main.c9c7215f.js",
     "index.html": "/dcard-frontend-hw/index.html",
-    "main.953a769f.css.map": "/dcard-frontend-hw/static/css/main.953a769f.css.map",
+    "main.363caa4a.css.map": "/dcard-frontend-hw/static/css/main.363caa4a.css.map",
     "main.c9c7215f.js.map": "/dcard-frontend-hw/static/js/main.c9c7215f.js.map"
   },
   "entrypoints": [
-    "static/css/main.953a769f.css",
+    "static/css/main.363caa4a.css",
     "static/js/main.c9c7215f.js"
   ]
 }
