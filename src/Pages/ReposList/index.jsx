@@ -36,57 +36,48 @@ const ReposList = () => {
     type: cache ? cache.alert.type : '',
     show: cache ? cache.alert.show : false
   })
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(!cache)
 
   // init >> if don't have cache, send api to get user information and reposotory
   useEffect(async () => {
     if (!cache) {
       // send api to get user info
-      setIsLoading(true)
       const info = await getUserInfo()
-      // if get info success
-      if (info) {
-        // get user repos
-        const res = await getReposList()
-        // if get repos success
-        if (res) {
-          const repos = [...user.repos, ...res]
-          const finish = res.length < 10
-          const page = user.page + 1
-          let alert = {
-            message: '',
-            type: '',
-            show: false
+      let repos = await getReposList()
+
+      if (repos && info) {
+        repos = [...user.repos, ...repos]
+        const finish = repos.length < 10
+        const page = user.page + 1
+        if (repos.length === 0) {
+          const alert = {
+            type: 'warning',
+            message: "This user don't have any repository",
+            show: true
           }
-          if (res.length === 0) {
-            alert = {
-              type: 'warning',
-              message: "This user don't have any repository",
-              show: true
-            }
-            setAlert(alert)
-          } else if (finish) {
-            alert = {
-              type: 'success',
-              message: 'Get all repositories!',
-              show: true
-            }
-            setAlert(alert)
+          setAlert(alert)
+        } else if (finish) {
+          const alert = {
+            type: 'success',
+            message: 'Get all repositories!',
+            show: true
           }
-          setUser({
-            info,
-            repos,
-            page,
-            finish
-          })
-          setCache({
-            info,
-            repos,
-            page,
-            finish,
-            alert
-          })
+          setAlert(alert)
         }
+
+        setUser({
+          info,
+          repos,
+          page,
+          finish
+        })
+        setCache({
+          info,
+          repos,
+          page,
+          finish,
+          alert
+        })
       }
       setIsLoading(false)
     }
@@ -98,7 +89,6 @@ const ReposList = () => {
       const res = await fetchUserInfo(username)
       return res
     } catch (e) {
-      // requset failed >> do not cache the user
       setAlert({
         type: 'danger',
         message: 'Requset failed!',
@@ -115,7 +105,6 @@ const ReposList = () => {
         const res = await fetchRepositoryList(username, user.page + 1, perPage)
         return res
       } catch (e) {
-        // fetch repositories failed
         setAlert({
           type: 'danger',
           message: 'Request failed!',
@@ -149,13 +138,8 @@ const ReposList = () => {
       const repos = [...user.repos, ...res]
       const finish = res.length < 10
       const page = user.page + 1
-      let alert = {
-        type: '',
-        message: '',
-        show: false
-      }
       if (finish) {
-        alert = {
+        const alert = {
           type: 'success',
           message: 'Get all repositories!',
           show: true
@@ -184,6 +168,7 @@ const ReposList = () => {
 
   return (
     <Layout title="Repository List">
+      {console.log('render')}
       <Loader show={isLoading} />
       <div style={displayStyled} className="reps-card">
         <UserCard
