@@ -118,6 +118,9 @@
     width: 90%;
     background: #fff;
   }
+  .card-title {
+    font-size: 1.5rem;
+  }
   .card-left {
     width: 100%;
     background-color: #66bb;
@@ -145,5 +148,10 @@
   .card-right {
     padding-bottom: 5px;
     min-height: 0;
+  }
+  .card-outerlink > button {
+    border: none;
+    color: #fff;
+    background-color: #ffc104;
   }
 }
