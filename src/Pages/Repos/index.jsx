@@ -5,6 +5,8 @@ import { fetchRepositoryDetail } from '../../Api/githubAPI'
 import Layout from '../../Layouts'
 import Alert from '../../Components/Alert/'
 import Loader from '../../Components/Loader'
+import Card from '../../Components/Card'
+import './style.css'
 
 const Repos = () => {
   const { username: userName, repo: repoName } = useParams()
@@ -50,23 +52,26 @@ const Repos = () => {
   }
 
   const displayStyled = repo.name === '' ? { display: 'none' } : {}
-
+  const displayLang = !repo.language ? { display: 'none' } : {}
   return (
     <Layout title="Repository">
       <Loader show={isLoading} />
-      <ul style={displayStyled}>
-        <li>full_name: {repo.name}</li>
-        <li>description: {repo.description}</li>
-        <li>star: {repo.star}</li>
-        <li>
-          url:
-          <a href={repo.url} target="_blank" rel="noreferrer">
-            link
-          </a>
-        </li>
-        <li>language: {repo.language}</li>
-      </ul>
-      <Alert {...alert} />
+      <div style={displayStyled}>
+        <Card
+          title={repo.name}
+          message={
+            repo.description || "[Auto] This repos don't have description."
+          }
+          outerLink={repo.url}
+          outerLinkName="Repository"
+        >
+          <div className="repo-badge repo-badge-red" style={displayLang}>
+            Language: {repo.language}
+          </div>
+          <div className="repo-badge repo-badge-yellow">Star: {repo.star}</div>
+        </Card>
+      </div>
+      <Alert {...alert} rounded="true" />
     </Layout>
   )
 }

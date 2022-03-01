@@ -45,40 +45,44 @@ const ReposList = () => {
       const info = await getUserInfo()
       let repos = await getReposList()
 
-      if (repos && info) {
-        repos = [...user.repos, ...repos]
-        const finish = repos.length < 10
-        const page = user.page + 1
-        if (repos.length === 0) {
-          const alert = {
-            type: 'warning',
-            message: "This user don't have any repository",
-            show: true
-          }
-          setAlert(alert)
-        } else if (finish) {
-          const alert = {
-            type: 'success',
-            message: 'Get all repositories!',
-            show: true
-          }
-          setAlert(alert)
-        }
-
-        setUser({
-          info,
-          repos,
-          page,
-          finish
-        })
-        setCache({
-          info,
-          repos,
-          page,
-          finish,
-          alert
-        })
+      repos = [...user.repos, ...repos]
+      const finish = repos.length < 10
+      const page = user.page + 1
+      let alert = {
+        message: '',
+        type: '',
+        show: false
       }
+      if (repos.length === 0) {
+        alert = {
+          type: 'warning',
+          message: "This user don't have any repository",
+          show: true
+        }
+        setAlert(alert)
+      } else if (finish) {
+        alert = {
+          type: 'success',
+          message: 'Get all repositories!',
+          show: true
+        }
+        setAlert(alert)
+      }
+
+      setUser({
+        info,
+        repos,
+        page,
+        finish
+      })
+      setCache({
+        info,
+        repos,
+        page,
+        finish,
+        alert
+      })
+
       setIsLoading(false)
     }
   }, [])
@@ -118,20 +122,6 @@ const ReposList = () => {
     sessionStorage.setItem(`$${username}`, JSON.stringify(user))
   }
 
-  const mapReposToList = () =>
-    user.repos.map((repo) => ({
-      message: repo.name,
-      small: '⭐' + repo.star,
-      onClick: () =>
-        navigate(setRoutes(`/users/${username}/repos/${repo.name}`))
-    }))
-
-  const loadingText = (
-    <div style={{ textAlign: 'center', fontSize: '1rem' }}>Loading ...</div>
-  )
-
-  const displayStyled = user.info.avatarUrl ? {} : { display: 'none' }
-
   const getMoreRepos = async () => {
     const res = await getReposList()
     if (res) {
@@ -162,15 +152,29 @@ const ReposList = () => {
     }
   }
 
+  const mapReposToList = () =>
+    user.repos.map((repo) => ({
+      message: repo.name,
+      small: '⭐' + repo.star,
+      onClick: () =>
+        navigate(setRoutes(`/users/${username}/repos/${repo.name}`))
+    }))
+
   const userIntro = !user.info.intro
     ? "[Auto] This user don't have personal introduce."
     : user.info.intro
 
+  const loadingText = (
+    <div style={{ textAlign: 'center', fontSize: '1rem' }}>Loading ...</div>
+  )
+
+  const displayCard = user.info.name === '' ? { display: 'none' } : {}
+  const displayList = user.repos.length === 0 ? { display: 'none' } : {}
+
   return (
     <Layout title="Repository List">
-      {console.log('render')}
       <Loader show={isLoading} />
-      <div style={displayStyled} className="reps-card">
+      <div style={displayCard} className="reps-card">
         <UserCard
           avatarUrl={user.info.avatarUrl}
           name={user.info.name}
@@ -183,8 +187,8 @@ const ReposList = () => {
           email={user.info.email}
         />
       </div>
-      <Alert {...alert} />
-      <div className="reps-list" style={displayStyled}>
+      <Alert {...alert} rounded="true" />
+      <div className="reps-list" style={displayList}>
         <InfiniteScroll
           dataLength={user.repos.length}
           next={getMoreRepos}

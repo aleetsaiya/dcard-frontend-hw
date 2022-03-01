@@ -5,7 +5,7 @@ import { VscError, VscInfo, VscPass } from 'react-icons/vsc'
 import './style.css'
 
 const Alert = (props) => {
-  const { message, show, type } = props
+  const { message, show, type, rounded } = props
 
   const disaplyStyled = {
     display: show ? 'flex' : 'none'
@@ -17,8 +17,12 @@ const Alert = (props) => {
     if (type === 'success') return <VscPass className="alert-icon" />
   }
 
+  const className = rounded
+    ? `alert alert-${type} rounded`
+    : `alert alert-${type}`
+
   return (
-    <div style={disaplyStyled} className={'alert alert-' + type}>
+    <div style={disaplyStyled} className={className}>
       {getIcon()}
       {message}
     </div>
@@ -28,7 +32,8 @@ const Alert = (props) => {
 Alert.propTypes = {
   message: PropTypes.string,
   show: PropTypes.bool,
-  type: PropTypes.string
+  type: PropTypes.string,
+  rounded: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
 }
 
 export default React.memo(Alert)

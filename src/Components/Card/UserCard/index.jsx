@@ -56,4 +56,4 @@ const UserCard = (props) => {
 
 UserCard.propTypes = propTypes
 
-export default UserCard
+export default React.memo(UserCard)
