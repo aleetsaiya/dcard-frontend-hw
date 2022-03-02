@@ -22,7 +22,7 @@ App should now be running on `http://localhost:3000/dcard-frontend-hw`
 ## Features
 + RWD
 + Infinite scroll
-+ Use `sessionStorage` to cache API response
++ Use `localStorage` to cache API response
 + Alert when error occur
 + Scroll to top button
 

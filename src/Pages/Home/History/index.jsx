@@ -6,14 +6,12 @@ import { useNavigate } from 'react-router-dom'
 import './style.css'
 
 const getSearchHistory = () => {
-  // get all items in sessionStorage
-  const items = { ...sessionStorage }
   const history = []
   const navigate = useNavigate()
-  for (const item in items) {
+  for (const item in localStorage) {
     if (item[0] === '$') {
       const name = item.substring(1)
-      const cache = JSON.parse(items[item])
+      const cache = JSON.parse(localStorage[item])
       history.push({
         avatarUrl: cache.info.avatarUrl,
         message: name,
@@ -30,7 +28,7 @@ const History = () => {
   const [searchHistory, setSearchHistory] = useState(his)
 
   const clearHistory = useCallback(() => {
-    sessionStorage.clear()
+    localStorage.clear()
     setSearchHistory([])
   }, [])
 

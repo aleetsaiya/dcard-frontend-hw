@@ -16,7 +16,7 @@ import { fetchRepositoryList, fetchUserInfo } from '../../Api/githubAPI'
 const ReposList = () => {
   const { username } = useParams()
   const navigate = useNavigate()
-  const cache = JSON.parse(sessionStorage.getItem(`$${username}`))
+  const cache = JSON.parse(localStorage.getItem(`$${username}`))
   const [user, setUser] = useState({
     info: {
       name: cache ? cache.info.name : '',
@@ -49,40 +49,31 @@ const ReposList = () => {
         repos = [...user.repos, ...repos]
         const finish = repos.length < 10
         const page = user.page + 1
-        let alert = {
-          message: '',
-          type: '',
-          show: false
-        }
+        let newAlert = { ...alert }
         if (repos.length === 0) {
-          alert = {
+          newAlert = {
             type: 'warning',
             message: "This user don't have any repository",
             show: true
           }
-          setAlert(alert)
+          setAlert(newAlert)
         } else if (finish) {
-          alert = {
+          newAlert = {
             type: 'success',
             message: 'Get all repositories!',
             show: true
           }
-          setAlert(alert)
+          setAlert(newAlert)
         }
-
-        setUser({
-          info,
-          repos,
-          page,
-          finish
-        })
-        setCache({
+        const temp = {
           info,
           repos,
           page,
           finish,
-          alert
-        })
+          alert: newAlert
+        }
+        setUser(temp)
+        writeIntoCache(temp)
       } finally {
         setIsLoading(false)
       }
@@ -120,8 +111,8 @@ const ReposList = () => {
     }
   }
 
-  const setCache = (user) => {
-    sessionStorage.setItem(`$${username}`, JSON.stringify(user))
+  const writeIntoCache = (user) => {
+    localStorage.setItem(`$${username}`, JSON.stringify(user))
   }
 
   const getMoreRepos = async () => {
@@ -130,27 +121,24 @@ const ReposList = () => {
       const repos = [...user.repos, ...res]
       const finish = res.length < 10
       const page = user.page + 1
+      let newAlert = { ...alert }
       if (finish) {
-        const alert = {
+        newAlert = {
           type: 'success',
           message: 'Get all repositories!',
           show: true
         }
-        setAlert(alert)
+        setAlert(newAlert)
       }
-      setUser({
-        info: { ...user.info },
-        repos,
-        page,
-        finish
-      })
-      setCache({
-        info: { ...user.info },
+      const temp = {
+        info: user.info,
         repos,
         page,
         finish,
-        alert
-      })
+        alert: newAlert
+      }
+      setUser(temp)
+      writeIntoCache(temp)
     }
   }
 
@@ -176,6 +164,7 @@ const ReposList = () => {
   return (
     <Layout title="Repository List">
       <Loader show={isLoading} />
+      {console.log('render repos-list page')}
       <div style={displayCard} className="reps-card">
         <UserCard
           avatarUrl={user.info.avatarUrl}
@@ -189,7 +178,6 @@ const ReposList = () => {
           email={user.info.email}
         />
       </div>
-      <Alert {...alert} rounded="true" />
       <div className="reps-list" style={displayList}>
         <InfiniteScroll
           dataLength={user.repos.length}
@@ -200,6 +188,7 @@ const ReposList = () => {
           <List ListItem={Item} items={mapReposToList()} />
         </InfiniteScroll>
       </div>
+      <Alert {...alert} rounded="true" />
     </Layout>
   )
 }

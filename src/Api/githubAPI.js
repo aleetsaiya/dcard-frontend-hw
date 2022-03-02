@@ -32,14 +32,14 @@ export const fetchRepositoryDetail = async (username, repoName) => {
     }
   })
   const {
-    full_name: name,
+    full_name: fullName,
     stargazers_count: star,
     html_url: url,
     language,
     description
   } = res.data
   return {
-    name,
+    fullName,
     description,
     star,
     url,

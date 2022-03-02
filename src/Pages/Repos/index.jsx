@@ -8,15 +8,23 @@ import Loader from '../../Components/Loader'
 import Card from '../../Components/Card'
 import './style.css'
 
+const readCache = (userName, reposName) => {
+  const key = '$' + userName
+  const repos = JSON.parse(localStorage[key]).repos
+  const target = repos.find((r) => r.name === reposName)
+  if (Object.keys(target).includes('fullName')) return target
+}
+
 const Repos = () => {
-  const { username: userName, repo: repoName } = useParams()
-  const [isLoading, setIsLoading] = useState(true)
-  const [repo, setRepo] = useState({
-    name: '',
-    description: '',
-    star: 0,
-    url: '',
-    language: ''
+  const { username: userName, repo: reposName } = useParams()
+  const cache = readCache(userName, reposName)
+  const [isLoading, setIsLoading] = useState(!cache)
+  const [repos, setRepos] = useState({
+    fullName: cache ? cache.fullName : '',
+    description: cache ? cache.description : '',
+    star: cache ? cache.star : 0,
+    url: cache ? cache.url : '',
+    language: cache ? cache.language : ''
   })
   const [alert, setAlert] = useState({
     type: '',
@@ -25,23 +33,29 @@ const Repos = () => {
   })
 
   useEffect(async () => {
-    try {
-      const res = await getRepoDetail()
-      setRepo({
-        name: res.name,
-        description: res.description,
-        star: res.star,
-        url: res.url,
-        language: res.language
-      })
-    } finally {
-      setIsLoading(false)
+    if (!cache) {
+      try {
+        const { fullName, description, star, url, language } =
+          await getReposDetail()
+        const repos = {
+          fullName,
+          description,
+          star,
+          url,
+          language
+        }
+        setRepos(repos)
+        writeIntoCache(repos)
+      } finally {
+        setIsLoading(false)
+      }
     }
   }, [])
 
-  const getRepoDetail = async () => {
+  const getReposDetail = async () => {
     try {
-      const res = await fetchRepositoryDetail(userName, repoName)
+      console.log('fetch repos detail')
+      const res = await fetchRepositoryDetail(userName, reposName)
       return res
     } catch (e) {
       setAlert({
@@ -52,24 +66,33 @@ const Repos = () => {
     }
   }
 
-  const displayStyled = repo.name === '' ? { display: 'none' } : {}
-  const displayLang = !repo.language ? { display: 'none' } : {}
+  const writeIntoCache = (repos) => {
+    const key = '$' + userName
+    const cache = JSON.parse(localStorage[key])
+    const index = cache.repos.findIndex((r) => r.name === reposName)
+    cache.repos[index] = { ...cache.repos[index], ...repos }
+    localStorage.setItem('$' + userName, JSON.stringify(cache))
+  }
+
+  const displayStyled = repos.fullName === '' ? { display: 'none' } : {}
+  const displayLang = !repos.language ? { display: 'none' } : {}
   return (
     <Layout title="Repository">
       <Loader show={isLoading} />
+      {console.log('render repos-page')}
       <div style={displayStyled}>
         <Card
-          title={repo.name}
+          title={repos.fullName}
           message={
-            repo.description || "[Auto] This repos don't have description."
+            repos.description || "[Auto] This repos don't have description."
           }
-          outerLink={repo.url}
+          outerLink={repos.url}
           outerLinkName="Repository"
         >
           <div className="repo-badge repo-badge-red" style={displayLang}>
-            Language: {repo.language}
+            Language: {repos.language}
           </div>
-          <div className="repo-badge repo-badge-yellow">Star: {repo.star}</div>
+          <div className="repo-badge repo-badge-yellow">Star: {repos.star}</div>
         </Card>
       </div>
       <Alert {...alert} rounded="true" />
