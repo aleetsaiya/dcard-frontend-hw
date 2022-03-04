@@ -21,10 +21,10 @@ App should now be running on `http://localhost:3000/dcard-frontend-hw`
 
 ## Features
 + RWD
++ React Router
 + Infinite scroll
 + Use `localStorage` to cache API response
 + Alert when error occur
-+ Scroll to top button
 
 
 ## File Structure
@@ -40,6 +40,5 @@ App should now be running on `http://localhost:3000/dcard-frontend-hw`
 | `src/Pages/Repos`    | Page show repository detail
 
 
-
-## Plan to do in the future
-- [ ] re-write the layout
+## Background
+Source: [uigradients-Venice](https://uigradients.com/#Venice)
